@@ -72,3 +72,53 @@ const data = [
 ];
 
 data.forEach(r => r.avg = +((r.hi + r.lo) / 2).toFixed(1));
+
+const labels = data.map(r => r.d);
+const highs  = data.map(r => r.hi);
+const lows   = data.map(r => r.lo);
+const avgs   = data.map(r => r.avg);
+
+const avg = arr => +(arr.reduce((a,b)=>a+b,0) / arr.length).toFixed(1);
+document.getElementById('stats').innerHTML = `
+  <div class="stat">Avg High: <b>${avg(highs)}°C</b></div>
+  <div class="stat">Avg Low: <b>${avg(lows)}°C</b></div>
+  <div class="stat">Avg Mean: <b>${avg(avgs)}°C</b></div>
+  <div class="stat">Warmest Day: <b>${Math.max(...highs)}°C</b></div>
+  <div class="stat">Coolest Night: <b>${Math.min(...lows)}°C</b></div>
+`;
+
+const tbody = document.querySelector('#datatable tbody');
+data.forEach(r => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `<td>${r.d}</td><td>${r.hi}</td><td>${r.lo}</td><td>${r.avg}</td>`;
+  tbody.appendChild(tr);
+});
+
+new Chart(document.getElementById('chart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [
+      { label:'High (°C)',    data: highs, borderColor:'#dc2626', backgroundColor:'rgba(220,38,38,.15)', tension:.3, pointRadius:3, fill:false },
+      { label:'Average (°C)', data: avgs,  borderColor:'#16a34a', backgroundColor:'rgba(22,163,74,.15)', tension:.3, pointRadius:3, borderDash:[6,4], fill:false },
+      { label:'Low (°C)',     data: lows,  borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.15)', tension:.3, pointRadius:3, fill:false },
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    interaction: { mode:'index', intersect:false },
+    plugins: {
+      title: { display:true, text:'London: High, Low, and Average Temperature (30-day forecast)' },
+      legend: { position:'bottom' },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y}°C` } }
+    },
+    scales: {
+      y: { title:{ display:true, text:'Temperature (°C)' }, suggestedMin:0, suggestedMax:22 },
+      x: { title:{ display:true, text:'Date' }, ticks:{ maxRotation:60, minRotation:45 } }
+    }
+  }
+});
+</script>
+</body>
+</html>
