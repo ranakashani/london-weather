@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>London 30-Day Weather Forecast (Apr 18 – May 17, 2026)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 24px; color: #1a1a1a; background: #fafafa; }
+  h1 { margin: 0 0 6px; font-size: 22px; }
+  .sub { color: #555; margin-bottom: 20px; font-size: 14px; }
+  .card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .stats { display: flex; gap: 24px; margin: 16px 0 8px; flex-wrap: wrap; font-size: 14px; }
+  .stat { background: #f1f5f9; padding: 8px 14px; border-radius: 6px; }
+  .stat b { color: #0f172a; }
+  table { border-collapse: collapse; margin-top: 20px; font-size: 13px; width: 100%; }
+  th, td { border: 1px solid #e2e8f0; padding: 6px 10px; text-align: center; }
+  th { background: #f8fafc; }
+  .chart-wrap { position: relative; height: 460px; }
+  .src { font-size: 12px; color: #64748b; margin-top: 16px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>London Weather Forecast — Next 30 Days</h1>
+  <div class="sub">April 18, 2026 → May 17, 2026 · Temperatures in °C</div>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="chart-wrap">
+    <canvas id="chart"></canvas>
+  </div>
+
+  <table id="datatable">
+    <thead><tr><th>Date</th><th>High (°C)</th><th>Low (°C)</th><th>Avg (°C)</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <div class="src">Source: AccuWeather monthly forecast for London (retrieved via Chrome).</div>
+</div>
+
+<script>
+const data = [
+  {d:"Apr 18", hi:16, lo:7},
+  {d:"Apr 19", hi:16, lo:6},
+  {d:"Apr 20", hi:14, lo:6},
+  {d:"Apr 21", hi:14, lo:8},
+  {d:"Apr 22", hi:17, lo:7},
+  {d:"Apr 23", hi:18, lo:6},
+  {d:"Apr 24", hi:18, lo:8},
+  {d:"Apr 25", hi:17, lo:7},
+  {d:"Apr 26", hi:16, lo:7},
+  {d:"Apr 27", hi:15, lo:8},
+  {d:"Apr 28", hi:16, lo:9},
+  {d:"Apr 29", hi:18, lo:9},
+  {d:"Apr 30", hi:17, lo:11},
+  {d:"May 1",  hi:17, lo:7},
+  {d:"May 2",  hi:14, lo:4},
+  {d:"May 3",  hi:14, lo:4},
+  {d:"May 4",  hi:14, lo:4},
+  {d:"May 5",  hi:14, lo:4},
+  {d:"May 6",  hi:14, lo:4},
+  {d:"May 7",  hi:15, lo:4},
+  {d:"May 8",  hi:14, lo:4},
+  {d:"May 9",  hi:14, lo:7},
+  {d:"May 10", hi:15, lo:7},
+  {d:"May 11", hi:15, lo:5},
+  {d:"May 12", hi:17, lo:8},
+  {d:"May 13", hi:19, lo:8},
+  {d:"May 14", hi:18, lo:7},
+  {d:"May 15", hi:19, lo:8},
+  {d:"May 16", hi:18, lo:8},
+  {d:"May 17", hi:19, lo:9},
+];
+
+data.forEach(r => r.avg = +((r.hi + r.lo) / 2).toFixed(1));
